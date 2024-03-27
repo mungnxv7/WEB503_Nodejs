@@ -11,8 +11,8 @@ const productModel = new Schema(
     images: [{ type: String }],
     price: { type: Number, require: true },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Categories",
+      type: String,
+      require: true,
     },
     rating: { type: Number, require: true },
     description: { type: String, require: true },
