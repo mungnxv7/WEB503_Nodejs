@@ -74,11 +74,11 @@ const productController = {
 
   async postProduct(req, res) {
     try {
-      const data = {
-        ...req.body,
-        thumbnail: req.file.path,
-      };
-      const { error } = porductValidate.validate(data);
+      // const data = {
+      //   ...req.body,
+      //   thumbnail: req.file.path,
+      // };
+      const { error } = porductValidate.validate(req.body);
       if (error) {
         // if (req.file) {
         //   await cloudinary.uploader.destroy(req.file.filename);
@@ -91,7 +91,7 @@ const productController = {
         return;
       }
       const slug = slugify(data.nameProduct);
-      const result = await Product.create({ ...data, slug: slug });
+      const result = await Product.create({ ...req.body, slug: slug });
       res
         .status(200)
         .json({ message: "Thêm sản phẩm thành công", data: result._doc });
@@ -103,19 +103,19 @@ const productController = {
   async putProduct(req, res) {
     try {
       const { id } = req.params;
-      let data = {};
-      console.log("file", req.file);
-      if (req.file) {
-        const product = await Product.findOne({ _id: id });
-        await cloudinary.uploader.destroy(product.image.filename);
-        data = {
-          ...req.body,
-          image: { filename: req.file.filename, path: req.file.path },
-        };
-      } else {
-        data = req.body;
-      }
-      console.log("data", data);
+      const data = req.body;
+      // console.log("file", req.file);
+      // if (req.file) {
+      //   const product = await Product.findOne({ _id: id });
+      //   await cloudinary.uploader.destroy(product.image.filename);
+      //   data = {
+      //     ...req.body,
+      //     image: { filename: req.file.filename, path: req.file.path },
+      //   };
+      // } else {
+      //   data = req.body;
+      // }
+      // console.log("data", data);
       const { error } = porductValidate.validate(data);
       if (error) {
         let messageError = [];
