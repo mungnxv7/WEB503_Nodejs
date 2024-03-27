@@ -6,7 +6,7 @@ import { porductValidate } from "../validation/productValidate.js";
 const productController = {
   async getAllProduct(req, res) {
     try {
-      const products = await Product.find().populate("id_category");
+      const products = await Product.find();
       if (products) {
         res.json(products.map((product) => product.toObject()));
       } else {

@@ -1,11 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import router from "./src/routes/indexRoutes.js";
 import connect from "./src/config/config_db.js";
-import routesProduct from "./src/routes/productRoutes.js";
-import routesUser from "./src/routes/userRoutes.js";
-import routesCategory from "./src/routes/categoryRoutes.js";
-import routesSub_category from "./src/routes/sub_categoryRoutes.js";
+
 const app = express();
 
 dotenv.config();
@@ -18,10 +16,7 @@ app.use(
 );
 app.use(cors());
 app.use(express.json());
-app.use("/sub_category", routesSub_category);
-app.use("/products", routesProduct);
-app.use("/users", routesUser);
-app.use("/categories", routesCategory);
+app.use(router);
 connect(API_SERVER);
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
