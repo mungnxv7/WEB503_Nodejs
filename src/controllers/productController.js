@@ -33,9 +33,7 @@ const productController = {
   async getProductDetail(req, res) {
     try {
       const { id } = req.params;
-      const product = await Product.findOne({ _id: id }).populate(
-        "id_category"
-      );
+      const product = await Product.findOne({ _id: id });
       if (product) {
         res.json(product);
       } else {
