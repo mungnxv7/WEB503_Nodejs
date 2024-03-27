@@ -6,9 +6,22 @@ import { porductValidate } from "../validation/productValidate.js";
 const productController = {
   async getAllProduct(req, res) {
     try {
-      const products = await Product.find();
+      const {
+        _page = 1,
+        _limit = 12,
+        _sort = "createdAt",
+        _order = "asc",
+      } = req.query;
+
+      const option = {
+        page: _page,
+        limit: _limit,
+        sort: { [_sort]: _order === "asc" ? 1 : -1 },
+      };
+      const products = await Product.paginate({}, option);
+
       if (products) {
-        res.json(products.map((product) => product.toObject()));
+        res.json(products);
       } else {
         res.status(404).json({ message: "Lỗi lấy dữ liệu từ máy chủ" });
       }
@@ -65,13 +78,13 @@ const productController = {
     try {
       const data = {
         ...req.body,
-        image: { filename: req.file.filename, path: req.file.path },
+        thumbnail: req.file.path,
       };
       const { error } = porductValidate.validate(data);
       if (error) {
-        if (req.file) {
-          await cloudinary.uploader.destroy(req.file.filename);
-        }
+        // if (req.file) {
+        //   await cloudinary.uploader.destroy(req.file.filename);
+        // }
         let messageError = [];
         error.details.map((messError) => {
           messageError.push(messError.message);
