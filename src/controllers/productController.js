@@ -74,11 +74,8 @@ const productController = {
 
   async postProduct(req, res) {
     try {
-      // const data = {
-      //   ...req.body,
-      //   thumbnail: req.file.path,
-      // };
-      const { error } = porductValidate.validate(req.body);
+      const data = req.body;
+      const { error } = porductValidate.validate(data);
       if (error) {
         // if (req.file) {
         //   await cloudinary.uploader.destroy(req.file.filename);
@@ -90,8 +87,8 @@ const productController = {
         });
         return;
       }
-      const slug = slugify(data.nameProduct);
-      const result = await Product.create({ ...req.body, slug: slug });
+      const slug = slugify(data.title);
+      const result = await Product.create({ ...data, slug: slug });
       res
         .status(200)
         .json({ message: "Thêm sản phẩm thành công", data: result._doc });
