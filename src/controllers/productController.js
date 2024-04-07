@@ -11,6 +11,8 @@ const productController = {
         _limit = 12,
         _sort = "createdAt",
         _order = "asc",
+        _search = "",
+        _category = "",
       } = req.query;
 
       const option = {
@@ -18,7 +20,13 @@ const productController = {
         limit: _limit,
         sort: { [_sort]: _order === "asc" ? 1 : -1 },
       };
-      const products = await Product.paginate({}, option);
+
+      const query = { title: { $regex: _search, $options: "i" } };
+
+      if (_category != "") {
+        query.category = _category;
+      }
+      const products = await Product.paginate(query, option);
 
       if (products) {
         res.json(products);
