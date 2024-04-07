@@ -13,7 +13,7 @@ routesProduct.delete(
   productController.deleteProduct
 );
 // upload.single("image"),
-routesProduct.post("/", productController.postProduct);
+routesProduct.post("/", checkPermissionUser, productController.postProduct);
 routesProduct.put(
   "/:id",
   checkPermissionUser,
