@@ -96,9 +96,7 @@ const userController = {
         return;
       }
       isUser.password = undefined;
-      res
-        .status(200)
-        .json({ message: "Đăng nhập thành công", data: isUser, accessToken });
+      res.status(200).json({ data: isUser, accessToken });
     } catch (error) {
       res.status(500).send("Lỗi máy chủ: " + error.message);
     }
